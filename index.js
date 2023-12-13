@@ -1,6 +1,6 @@
+const config=require('./utils/config')
 const app=require('./app')
 
-const PORT=3003
+const PORT=config.PORT || 3002
 
-app.listen(PORT, () => console.log(`App is running in port ${PORT}`)
-)
+app.listen(PORT, () => console.log(`App is running in port ${config.PORT}`))
