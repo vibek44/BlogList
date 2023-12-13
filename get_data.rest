@@ -1,0 +1,10 @@
+
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+
+{
+    "title": "Cza of all trades",
+    "Author": "cza formalejo",
+    "url":"http://czaofalltrades.com/",
+    "likes":215
+}
