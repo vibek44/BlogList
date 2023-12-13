@@ -1,11 +1,21 @@
+const config=require('./utils/config')
+const cors=require('cors')
 const express=require('express')
+const blogrouter=require('./controller/blogroute')
 const app=express()
+const mongoose=require('mongoose')
 
-app.get('/',(req,res) => {
-  res.send('<h1>Homepage</h1>')
-})
-app.get('/api/blogs',(req,res) => {
-   res.send('<h1>okei</h1>')
-})
+
+mongoose.connect(config.MONGODB_URI)
+  .then(()=> console.log('connected'))
+  .catch(() => console.log('error connection'))
+
+app.use(cors())
+app.use(express.json())
+
+app.use('/api',blogrouter)
+
+
+
 
 module.exports=app
