@@ -10,7 +10,7 @@ blogrouter.get('/blogs',(req,res) => {
 blogrouter.post('/blogs',(req,res) => {
   const blog=new Blog(req.body)
   blog.save()
-    .then((result)=>res.status(201).json(result))
+    .then((result) => res.status(201).json(result))
   
   
 })
