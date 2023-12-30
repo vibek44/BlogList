@@ -39,6 +39,7 @@ test('blog list returns current amount of bloglist in JSON format', async() => {
   expect(response.body).toHaveLength(initialblog.length)
 })
 
-
-
-
+test('unique identifier property of blog post is named id', async() => {
+  const response= await api.get('/api/blogs')
+  response.body.map(blogs => expect(blogs.id).toBeDefined()) 
+})
