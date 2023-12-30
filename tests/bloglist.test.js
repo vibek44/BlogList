@@ -59,3 +59,16 @@ test('Post request and total number of blogs is correct', async() => {
   expect(response.body).toHaveLength(initialblog.length+1)
   expect(contents).toContain('Type wars')
 })
+
+test('if likes property misssing default to value 0',async() => {
+  const newblog={
+    title: 'Type wars',
+    author: 'QRobert C. Martiin',
+    url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html' 
+  }
+  const response=await api
+    .post('/api/blogs')
+    .send(newblog)
+    
+  expect(response.body.likes).toBe(0)
+})
