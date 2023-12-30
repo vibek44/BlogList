@@ -43,3 +43,19 @@ test('unique identifier property of blog post is named id', async() => {
   const response= await api.get('/api/blogs')
   response.body.map(blogs => expect(blogs.id).toBeDefined()) 
 })
+
+test('Post request and total number of blogs is correct', async() => {
+  const newblog={
+    title: 'Type wars',
+    author: 'Robert C. Martin',
+    url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+    likes: 2
+  }
+  await api
+    .post('/api/blogs')
+    .send(newblog)
+  const response = await api.get('/api/blogs')
+  const contents = response.body.map(el => el.title)
+  expect(response.body).toHaveLength(initialblog.length+1)
+  expect(contents).toContain('Type wars')
+})
