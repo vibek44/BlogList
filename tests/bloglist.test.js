@@ -10,14 +10,14 @@ const initialblog=[
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',
     likes: 7,
-       
+
   },
   {
     title: 'Go To Statement Considered Harmful',
     author: 'Edsger W. Dijkstra',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
     likes: 5,
-  
+
   },
   {
     title: 'Canonical string reduction',
@@ -31,7 +31,7 @@ beforeEach(async () => {
   await Blog.deleteMany({})
   const blogObject=initialblog.map((blog) => new Blog(blog))
   const promiseArray=blogObject.map((blog) => blog.save())
-  await Promise.all(promiseArray)   
+  await Promise.all(promiseArray)
 })
 
 test('blog list returns current amount of bloglist in JSON format', async() => {
@@ -41,7 +41,7 @@ test('blog list returns current amount of bloglist in JSON format', async() => {
 
 test('unique identifier property of blog post is named id', async() => {
   const response= await api.get('/api/blogs')
-  response.body.map(blogs => expect(blogs.id).toBeDefined()) 
+  response.body.map(blogs => expect(blogs.id).toBeDefined())
 })
 
 test('Post request and total number of blogs is correct', async() => {
@@ -64,11 +64,25 @@ test('if likes property misssing default to value 0',async() => {
   const newblog={
     title: 'Type wars',
     author: 'QRobert C. Martiin',
-    url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html' 
+    url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+
   }
   const response=await api
     .post('/api/blogs')
     .send(newblog)
-    
+
   expect(response.body.likes).toBe(0)
+})
+
+test.only('title or url is missing, backend respond with 400', async() => {
+  const blog={
+    title: 'React patterns',
+    author: 'Michael Chan',
+    url: 'https://reactpatterns.com/',
+    likes: 7,
+  }
+  await api
+    .post('/api/blogs')
+    .send(blog)
+    .expect(400)
 })
