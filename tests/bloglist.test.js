@@ -66,12 +66,12 @@ test('title or url is missing, backend respond with 400', async() => {
     .expect(400)
 })
 
-test.only('blog with valid id is deleted successfully', async() => {
+test('blog with valid id is deleted successfully', async() => {
   const blogAtStart=await blogsInDb()
   const blogToDelete=blogAtStart[1]
   await api
     .delete(`/api/blogs/${blogToDelete.id}`)
-    .expect(204)
+    .expect(200)
 
   const blogAtEnd=await blogsInDb()
   expect(blogAtEnd).toHaveLength(blogAtStart.length-1)
@@ -79,6 +79,22 @@ test.only('blog with valid id is deleted successfully', async() => {
   const blogTitles=blogAtEnd.map(blog => blog.title)
   expect(blogTitles).not.toContain(blogToDelete.title)
 
+})
+
+test.only('updating blog  is verified', async() => {
+  const blogAtStart=await blogsInDb()
+  let blogToUpdate={ ...blogAtStart[blogAtStart.length-2],likes:23 }
+  
+  await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(blogToUpdate)
+    .expect('Content-Type', /json/)
+    .expect(200)
+
+  const blogAtEnd=await blogsInDb()
+  expect(blogAtEnd).toHaveLength(blogAtStart.length)
+  expect(blogAtEnd[blogAtEnd.length-2].likes).toBe(23)
+  
 })
 
 afterAll( async() => {
