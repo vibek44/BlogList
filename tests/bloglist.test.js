@@ -1,31 +1,12 @@
+const mongoose=require('mongoose')
 const supertest=require('supertest')
 const app=require('../app')
 const Blog=require('../models/bloglist')
+const { initialblog,blogsInDb }=require('./test_helper')
+
 
 const api=supertest(app)
 
-const initialblog=[
-  {
-    title: 'React patterns',
-    author: 'Michael Chan',
-    url: 'https://reactpatterns.com/',
-    likes: 7,
-
-  },
-  {
-    title: 'Go To Statement Considered Harmful',
-    author: 'Edsger W. Dijkstra',
-    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 5,
-
-  },
-  {
-    title: 'Canonical string reduction',
-    author: 'Edsger W. Dijkstra',
-    url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
-    likes: 62,
-  },
-]
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -54,9 +35,9 @@ test('Post request and total number of blogs is correct', async() => {
   await api
     .post('/api/blogs')
     .send(newblog)
-  const response = await api.get('/api/blogs')
-  const contents = response.body.map(el => el.title)
-  expect(response.body).toHaveLength(initialblog.length+1)
+  const response = await blogsInDb()
+  const contents = response.map(el => el.title)
+  expect(response).toHaveLength(initialblog.length+1)
   expect(contents).toContain('Type wars')
 })
 
@@ -74,15 +55,32 @@ test('if likes property misssing default to value 0',async() => {
   expect(response.body.likes).toBe(0)
 })
 
-test.only('title or url is missing, backend respond with 400', async() => {
+test('title or url is missing, backend respond with 400', async() => {
   const blog={
-    title: 'React patterns',
     author: 'Michael Chan',
-    url: 'https://reactpatterns.com/',
     likes: 7,
   }
   await api
     .post('/api/blogs')
     .send(blog)
     .expect(400)
+})
+
+test.only('blog with valid id is deleted successfully', async() => {
+  const blogAtStart=await blogsInDb()
+  const blogToDelete=blogAtStart[1]
+  await api
+    .delete(`/api/blogs/${blogToDelete.id}`)
+    .expect(204)
+
+  const blogAtEnd=await blogsInDb()
+  expect(blogAtEnd).toHaveLength(blogAtStart.length-1)
+
+  const blogTitles=blogAtEnd.map(blog => blog.title)
+  expect(blogTitles).not.toContain(blogToDelete.title)
+
+})
+
+afterAll( async() => {
+  await mongoose.connection.close()
 })
