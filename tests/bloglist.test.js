@@ -16,12 +16,11 @@ beforeEach(async () => {
 })
 
 describe.only('when there is initially some blogs saved', () => {
-
   test('blog list returns current amount of bloglist in JSON format', async() => {
     const response=await api
       .get('/api/blogs')
       .expect('Content-type',/application\/json/)
-      
+
     expect(response.body).toHaveLength(initialblog.length)
   })
   
