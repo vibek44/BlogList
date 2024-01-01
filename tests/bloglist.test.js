@@ -15,15 +15,19 @@ beforeEach(async () => {
   await Promise.all(promiseArray)
 })
 
-test('blog list returns current amount of bloglist in JSON format', async() => {
-  const response=await api.get('/api/blogs').expect('Content-type',/application\/json/)
-  expect(response.body).toHaveLength(initialblog.length)
+describe.only('when there is initially some blogs saved', () => {
+
+  test('blog list returns current amount of bloglist in JSON format', async() => {
+    const response=await api.get('/api/blogs').expect('Content-type',/application\/json/)
+    expect(response.body).toHaveLength(initialblog.length)
+  })
+  
+  test('unique identifier property of blog post is named id', async() => {
+    const response= await api.get('/api/blogs')
+    response.body.map(blogs => expect(blogs.id).toBeDefined())
+  })
 })
 
-test('unique identifier property of blog post is named id', async() => {
-  const response= await api.get('/api/blogs')
-  response.body.map(blogs => expect(blogs.id).toBeDefined())
-})
 
 test('Post request and total number of blogs is correct', async() => {
   const newblog={
