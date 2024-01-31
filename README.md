@@ -11,5 +11,5 @@ https://expressjs.com/en/4x/api.html
 
 MongoDb atlas is chosen as data storing database, Though MongoDb is noSql language, The query functionality is achieved using populate method provided by mongoose 
 
-Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js
+Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js(used to connect with database mongodb else if there is any)
 
