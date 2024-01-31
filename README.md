@@ -17,3 +17,5 @@ unit test and integration test is done using jest framework
 https://jestjs.io/docs/using-matchers#arrays-and-iterables
 mentioned links provides and gives understanding on various techniques to match number string,array iterable. it also forecast different matcher function provided by jest 
 
+eslint is used as linter for static code analysis(source code errors,stylistic issues to improve code quality)
+
