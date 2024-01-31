@@ -13,3 +13,7 @@ MongoDb atlas is chosen as data storing database, Though MongoDb is noSql langua
 
 Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js(used to connect with database mongodb else if there is any)
 
+unit test and integration test is done using jest framework
+https://jestjs.io/docs/using-matchers#arrays-and-iterables
+mentioned links provides and gives understanding on various techniques to match number string,array iterable. it also forecast different matcher function provided by jest 
+
